@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthWatch - Registre de Consultation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F9FA;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: white;
+            border-bottom: 2px solid #e9ecef;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            background: #007BFF;
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .header-text h1 {
+            font-size: 2rem;
+            color: #007BFF;
+            font-weight: 700;
+        }
+
+        .header-text p {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #495057;
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .form-section, .consultations-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        input[readonly] {
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        .subsection-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+            margin: 1.5rem 0 1rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f1f3f5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vital-signs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #007BFF;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .consultations-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .consultation-card {
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .consultation-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .consultation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .consultation-id {
+            font-size: 0.75rem;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-grave {
+            background: #fee;
+            color: #dc3545;
+        }
+
+        .status-simple {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .consultation-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            color: #6c757d;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: #212529;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .vital-signs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .symptoms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1rem;
+            }
+
+            .header-text h1 {
+                font-size: 1.5rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .vital-signs {
+                grid-template-columns: 1fr;
+            }
+
+            .symptoms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section, .consultations-section {
+                padding: 1.5rem;
+            }
+        }
+
+        .icon-heart {
+            fill: currentColor;
+        }
+
+        .icon-activity {
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .icon-thermometer {
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" class="icon-heart">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+            </div>
+            <div class="header-text">
+                <h1>HealthWatch</h1>
+                <p>Registre de Consultation - Centre de Santé</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <p class="subtitle">Saisissez les informations du patient et les observations médicales.</p>
+
+        <div class="container">
+            <div class="form-section">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" class="icon-activity">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    Nouvelle Consultation
+                </h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ID Consultation</label>
+                        <input type="text" id="consultationId" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Date de consultation</label>
+                        <input type="date" id="dateConsultation">
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Informations Patient
+                </h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom *</label>
+                        <input type="text" id="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Prénom *</label>
+                        <input type="text" id="prenom" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sexe *</label>
+                        <select id="sexe" required>
+                            <option value="">Sélectionner</option>
+                            <option value="Homme">Homme</option>
+                            <option value="Femme">Femme</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Âge *</label>
+                        <input type="number" id="age" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Localité</label>
+                    <input type="text" id="localite">
+                </div>
+
+                <h3 class="subsection-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" class="icon-thermometer">
+                        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                    </svg>
+                    Signes Vitaux
+                </h3>
+
+                <div class="vital-signs">
+                    <div class="form-group">
+                        <label>Température (°C)</label>
+                        <input type="number" id="temperature" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Poids (kg)</label>
+                        <input type="number" id="poids" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Taux (HB)</label>
+                        <input type="number" id="taux" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Pression Sys. (mmHg)</label>
+                        <input type="number" id="pressionSys">
+                    </div>
+                    <div class="form-group">
+                        <label>Pression Dia. (mmHg)</label>
+                        <input type="number" id="pressionDia">
+                    </div>
+                    <div class="form-group">
+                        <label>Glycémie cap. (g/L)</label>
+                        <input type="number" id="glycemie" step="0.01">
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Symptômes</h3>
+                <div class="symptoms-grid">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="fievre">
+                        <label for="fievre">Fièvre</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="courbature">
+                        <label for="courbature">Courbature</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="cephalees">
+                        <label for="cephalees">Céphalées</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="frissons">
+                        <label for="frissons">Frissons</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="vomissements">
+                        <label for="vomissements">Vomissements</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="touxGrasse">
+                        <label for="touxGrasse">Toux grasse</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="vertiges">
+                        <label for="vertiges">Vertiges</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="douleursDiffuses">
+                        <label for="douleursDiffuses">Douleurs diffuses</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="nausees">
+                        <label for="nausees">Nausées</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="anorexie">
+                        <label for="anorexie">Anorexie</label>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Observation et Traitement</h3>
+                <div class="form-group">
+                    <label>Observation du médecin</label>
+                    <textarea id="observation"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Traitement</label>
+                    <select id="traitement">
+                        <option value="">Sélectionner</option>
+                        <option value="ATC">ATC</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+
+                <button class="submit-btn" onclick="enregistrerConsultation()">
+                    💾 Enregistrer la consultation
+                </button>
+            </div>
+
+            <div class="consultations-section">
+                <h2 class="section-title">Consultations Récentes</h2>
+                <div class="consultations-list" id="consultationsList">
+                    <!-- Les consultations seront ajoutées ici dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let consultations = [
+            {
+                id: 'CONS001',
+                date: '2025-10-06',
+                sexe: 'Homme',
+                age: 45,
+                temperature: 38.5,
+                typePalu: 'Simple',
+                statut: 'Simple'
+            },
+            {
+                id: 'CONS002',
+                date: '2025-10-06',
+                sexe: 'Femme',
+                age: 32,
+                temperature: 39.2,
+                typePalu: 'Grave',
+                statut: 'Grave'
+            }
+        ];
+
+        let compteurConsultations = 3;
+
+        function initialiser() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dateConsultation').value = today;
+            document.getElementById('consultationId').value = `CONS${String(compteurConsultations).padStart(3, '0')}`;
+            afficherConsultations();
+        }
+
+        function afficherConsultations() {
+            const liste = document.getElementById('consultationsList');
+            liste.innerHTML = '';
+
+            consultations.forEach(consultation => {
+                const card = document.createElement('div');
+                card.className = 'consultation-card';
+                card.innerHTML = `
+                    <div class="consultation-header">
+                        <span class="consultation-id">${consultation.id}</span>
+                        <span class="status-badge ${consultation.statut === 'Grave' ? 'status-grave' : 'status-simple'}">
+                            ${consultation.statut}
+                        </span>
+                    </div>
+                    <div class="consultation-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Date:</span>
+                            <span class="detail-value">${consultation.date}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Sexe:</span>
+                            <span class="detail-value">${consultation.sexe}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Âge:</span>
+                            <span class="detail-value">${consultation.age} ans</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Temp.:</span>
+                            <span class="detail-value">${consultation.temperature}°C</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Type:</span>
+                            <span class="detail-value">${consultation.typePalu}</span>
+                        </div>
+                    </div>
+                `;
+                liste.appendChild(card);
+            });
+        }
+
+        function determinerStatut(temperature, symptomes) {
+            const sympGraves = symptomes.vomissements || symptomes.vertiges;
+            if (temperature >= 39.5 || sympGraves) {
+                return 'Grave';
+            }
+            return 'Simple';
+        }
+
+        function enregistrerConsultation() {
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            const sexe = document.getElementById('sexe').value;
+            const age = document.getElementById('age').value;
+
+            if (!nom || !prenom || !sexe || !age) {
+                alert('Veuillez remplir tous les champs obligatoires (Nom, Prénom, Sexe, Âge)');
+                return;
+            }
+
+            const symptomes = {
+                fievre: document.getElementById('fievre').checked,
+                courbature: document.getElementById('courbature').checked,
+                cephalees: document.getElementById('cephalees').checked,
+                frissons: document.getElementById('frissons').checked,
+                vomissements: document.getElementById('vomissements').checked,
+                touxGrasse: document.getElementById('touxGrasse').checked,
+                vertiges: document.getElementById('vertiges').checked,
+                douleursDiffuses: document.getElementById('douleursDiffuses').checked,
+                nausees: document.getElementById('nausees').checked,
+                anorexie: document.getElementById('anorexie').checked
+            };
+
+            const temperature = parseFloat(document.getElementById('temperature').value) || 0;
+            const traitement = document.getElementById('traitement').value;
+
+            const nouvelleConsultation = {
+                id: document.getElementById('consultationId').value,
+                date: document.getElementById('dateConsultation').value,
+                sexe: sexe,
+                age: parseInt(age),
+                temperature: temperature,
+                typePalu: traitement === 'ATC' ? 'Paludisme' : 'Autre',
+                statut: determinerStatut(temperature, symptomes)
+            };
+
+            consultations.unshift(nouvelleConsultation);
+            afficherConsultations();
+
+            reinitialiserFormulaire();
+
+            alert('✅ Consultation enregistrée avec succès !');
+        }
+
+        function reinitialiserFormulaire() {
+            compteurConsultations++;
+            document.getElementById('consultationId').value = `CONS${String(compteurConsultations).padStart(3, '0')}`;
+            
+            document.getElementById('nom').value = '';
+            document.getElementById('prenom').value = '';
+            document.getElementById('sexe').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('localite').value = '';
+            document.getElementById('temperature').value = '';
+            document.getElementById('poids').value = '';
+            document.getElementById('taux').value = '';
+            document.getElementById('pressionSys').value = '';
+            document.getElementById('pressionDia').value = '';
+            document.getElementById('glycemie').value = '';
+            document.getElementById('observation').value = '';
+            document.getElementById('traitement').value = '';
+
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dateConsultation').value = today;
+        }
+
+        window.onload = initialiser;
+    </script>
+</body>
+</html>
